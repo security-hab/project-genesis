@@ -9,6 +9,13 @@ OPTION_CREATE_STRUCTURE = 1
 OPTION_ADD_PROJECT = 2
 OPTION_FINISH_PROGRAM = 0
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data.db")
+AVAILABLE_PROJECT_TYPES = """
+[1] - parsing
+[2] - scripts
+[3] - web
+[4] - data analysis
+[5] - other
+"""
 
 
 def clear_console():
@@ -61,7 +68,7 @@ def full_folder_structure():
         cursor = conn.cursor()
         cursor.execute("INSERT INTO path(path) VALUES (?)", (folder_path,))
         conn.commit()
-        print(f"[*] Path '{folder_path}' has been added to the database!")
+        print(f"\n[*] Path '{folder_path}' has been added to the database!\n")
     # conn.commit()
 
     os.chdir(folder_path)
@@ -73,7 +80,7 @@ def full_folder_structure():
         time.sleep(0.5)
 
 
-def project_structure():
+def project_structure(project_name, project_type: int):
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM path")
@@ -85,21 +92,65 @@ def project_structure():
 
     last_path = folder_paths[-1][0]
 
-    for i in range(len(DIR_CATEGORIES)):
-        destination = os.path.join(last_path, DIR_CATEGORIES[i])
-        os.chdir(destination)
+    if project_type == 1:
+        final_path = os.path.join(last_path, DIR_CATEGORIES[0])
+        os.chdir(final_path)
+        os.mkdir(project_name)
+        project_directory = os.path.join(final_path, project_name)
+        os.chdir(project_directory)
 
-        for i in range(len(FOLDERS)):
-            try:
-                os.mkdir(f"{FOLDERS[i]}")
-                i += 1
-            except FileExistsError as ex:
-                print(f"{ex}")
-                continue
+        folder_maker(FOLDERS)
+        file_writer(project_directory)
 
-        file_writer(destination)
+    elif project_type == 2:
+        final_path = os.path.join(last_path, DIR_CATEGORIES[1])
+        os.chdir(final_path)
+        os.mkdir(project_name)
+        project_directory = os.path.join(final_path, project_name)
+        os.chdir(project_directory)
 
-        i += 1
+        folder_maker(FOLDERS)
+        file_writer(project_directory)
+
+    elif project_type == 3:
+        final_path = os.path.join(last_path, DIR_CATEGORIES[2])
+        os.chdir(final_path)
+        os.mkdir(project_name)
+        project_directory = os.path.join(final_path, project_name)
+        os.chdir(project_directory)
+
+        folder_maker(FOLDERS)
+        file_writer(project_directory)
+    elif project_type == 4:
+        final_path = os.path.join(last_path, DIR_CATEGORIES[3])
+        os.chdir(final_path)
+        os.mkdir(project_name)
+        project_directory = os.path.join(final_path, project_name)
+        os.chdir(project_directory)
+
+        folder_maker(FOLDERS)
+        file_writer(project_directory)
+    elif project_type == 5:
+        final_path = os.path.join(last_path, DIR_CATEGORIES[4])
+        os.chdir(final_path)
+        os.mkdir(project_name)
+        project_directory = os.path.join(final_path, project_name)
+        os.chdir(project_directory)
+
+        folder_maker(FOLDERS)
+        file_writer(project_directory)
+    else:
+        print("[!] Invalid input!")
+
+
+def folder_maker(FOLDERS):
+    for i in range(len(FOLDERS)):
+        try:
+            os.mkdir(f"{FOLDERS[i]}")
+            i += 1
+        except FileExistsError as ex:
+            print(f"{ex}")
+            continue
 
 
 def main():
@@ -124,7 +175,10 @@ def main():
             db_creation()
             full_folder_structure()
         elif options == OPTION_ADD_PROJECT:
-            project_structure()
+            project_name = input("[*] What will be your project name?: ")
+            print(AVAILABLE_PROJECT_TYPES)
+            project_type = int(input("[*] What type of project is?: "))
+            project_structure(project_name, project_type)
         elif options == OPTION_FINISH_PROGRAM:
             print("[!] You finished programm! Goodbye!")
             break
