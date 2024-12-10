@@ -128,56 +128,6 @@ def project_structure(project_name, project_type: int):
     else:
         print(f"[!] Invalid project type selected!")
 
-    # if project_type == 1:
-    #     final_path = os.path.join(last_path, DIR_CATEGORIES[0])
-    #     os.chdir(final_path)
-    #     os.mkdir(project_name)
-    #     project_directory = os.path.join(final_path, project_name)
-    #     os.chdir(project_directory)
-    #
-    #     folder_maker(FOLDERS)
-    #     file_writer(project_directory)
-    #
-    # elif project_type == 2:
-    #     final_path = os.path.join(last_path, DIR_CATEGORIES[1])
-    #     os.chdir(final_path)
-    #     os.mkdir(project_name)
-    #     project_directory = os.path.join(final_path, project_name)
-    #     os.chdir(project_directory)
-    #
-    #     folder_maker(FOLDERS)
-    #     file_writer(project_directory)
-    #
-    # elif project_type == 3:
-    #     final_path = os.path.join(last_path, DIR_CATEGORIES[2])
-    #     os.chdir(final_path)
-    #     os.mkdir(project_name)
-    #     project_directory = os.path.join(final_path, project_name)
-    #     os.chdir(project_directory)
-    #
-    #     folder_maker(FOLDERS)
-    #     file_writer(project_directory)
-    # elif project_type == 4:
-    #     final_path = os.path.join(last_path, DIR_CATEGORIES[3])
-    #     os.chdir(final_path)
-    #     os.mkdir(project_name)
-    #     project_directory = os.path.join(final_path, project_name)
-    #     os.chdir(project_directory)
-    #
-    #     folder_maker(FOLDERS)
-    #     file_writer(project_directory)
-    # elif project_type == 5:
-    #     final_path = os.path.join(last_path, DIR_CATEGORIES[4])
-    #     os.chdir(final_path)
-    #     os.mkdir(project_name)
-    #     project_directory = os.path.join(final_path, project_name)
-    #     os.chdir(project_directory)
-    #
-    #     folder_maker(FOLDERS)
-    #     file_writer(project_directory)
-    # else:
-    #     print("[!] Invalid input!")
-
 
 def folder_maker(FOLDERS):
     for i in range(len(FOLDERS)):
