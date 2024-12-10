@@ -81,6 +81,8 @@ def full_folder_structure():
 
 
 def project_structure(project_name, project_type: int):
+    print(f"[*] Starting project scructure creation for project: {project_name}")
+
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM path")
@@ -91,56 +93,90 @@ def project_structure(project_name, project_type: int):
         return
 
     last_path = folder_paths[-1][0]
+    print(f"[!] Using the last saved path: {last_path}")
 
-    if project_type == 1:
-        final_path = os.path.join(last_path, DIR_CATEGORIES[0])
-        os.chdir(final_path)
-        os.mkdir(project_name)
-        project_directory = os.path.join(final_path, project_name)
-        os.chdir(project_directory)
+    category_map = {
+        1: DIR_CATEGORIES[0],
+        2: DIR_CATEGORIES[1],
+        3: DIR_CATEGORIES[2],
+        4: DIR_CATEGORIES[3],
+        5: DIR_CATEGORIES[4],
+    }
 
-        folder_maker(FOLDERS)
-        file_writer(project_directory)
+    if project_type in category_map:
+        final_path = os.path.join(last_path, category_map[project_type])
+        print(f"[*] Target directory for project type: {project_type}: {final_path}")
 
-    elif project_type == 2:
-        final_path = os.path.join(last_path, DIR_CATEGORIES[1])
-        os.chdir(final_path)
-        os.mkdir(project_name)
-        project_directory = os.path.join(final_path, project_name)
-        os.chdir(project_directory)
+        try:
+            os.chdir(final_path)
+            os.mkdir(project_name)
+            print(f"[*] Created project folder: {project_name}")
 
-        folder_maker(FOLDERS)
-        file_writer(project_directory)
+            project_directory = os.path.join(final_path, project_name)
+            os.chdir(project_directory)
+            print(f"[*] Navigated to project directory: {project_directory}")
 
-    elif project_type == 3:
-        final_path = os.path.join(last_path, DIR_CATEGORIES[2])
-        os.chdir(final_path)
-        os.mkdir(project_name)
-        project_directory = os.path.join(final_path, project_name)
-        os.chdir(project_directory)
+            folder_maker(FOLDERS)
+            print(f"[*] Created additional folders for project: {FOLDERS}")
 
-        folder_maker(FOLDERS)
-        file_writer(project_directory)
-    elif project_type == 4:
-        final_path = os.path.join(last_path, DIR_CATEGORIES[3])
-        os.chdir(final_path)
-        os.mkdir(project_name)
-        project_directory = os.path.join(final_path, project_name)
-        os.chdir(project_directory)
-
-        folder_maker(FOLDERS)
-        file_writer(project_directory)
-    elif project_type == 5:
-        final_path = os.path.join(last_path, DIR_CATEGORIES[4])
-        os.chdir(final_path)
-        os.mkdir(project_name)
-        project_directory = os.path.join(final_path, project_name)
-        os.chdir(project_directory)
-
-        folder_maker(FOLDERS)
-        file_writer(project_directory)
+            file_writer(project_directory)
+            print(
+                f"[*] Files for the project were successfully created in: {project_directory}"
+            )
+        except OSError as ex:
+            print(f"[!] Error occured while creating the project structure: {ex}")
     else:
-        print("[!] Invalid input!")
+        print(f"[!] Invalid project type selected!")
+
+    # if project_type == 1:
+    #     final_path = os.path.join(last_path, DIR_CATEGORIES[0])
+    #     os.chdir(final_path)
+    #     os.mkdir(project_name)
+    #     project_directory = os.path.join(final_path, project_name)
+    #     os.chdir(project_directory)
+    #
+    #     folder_maker(FOLDERS)
+    #     file_writer(project_directory)
+    #
+    # elif project_type == 2:
+    #     final_path = os.path.join(last_path, DIR_CATEGORIES[1])
+    #     os.chdir(final_path)
+    #     os.mkdir(project_name)
+    #     project_directory = os.path.join(final_path, project_name)
+    #     os.chdir(project_directory)
+    #
+    #     folder_maker(FOLDERS)
+    #     file_writer(project_directory)
+    #
+    # elif project_type == 3:
+    #     final_path = os.path.join(last_path, DIR_CATEGORIES[2])
+    #     os.chdir(final_path)
+    #     os.mkdir(project_name)
+    #     project_directory = os.path.join(final_path, project_name)
+    #     os.chdir(project_directory)
+    #
+    #     folder_maker(FOLDERS)
+    #     file_writer(project_directory)
+    # elif project_type == 4:
+    #     final_path = os.path.join(last_path, DIR_CATEGORIES[3])
+    #     os.chdir(final_path)
+    #     os.mkdir(project_name)
+    #     project_directory = os.path.join(final_path, project_name)
+    #     os.chdir(project_directory)
+    #
+    #     folder_maker(FOLDERS)
+    #     file_writer(project_directory)
+    # elif project_type == 5:
+    #     final_path = os.path.join(last_path, DIR_CATEGORIES[4])
+    #     os.chdir(final_path)
+    #     os.mkdir(project_name)
+    #     project_directory = os.path.join(final_path, project_name)
+    #     os.chdir(project_directory)
+    #
+    #     folder_maker(FOLDERS)
+    #     file_writer(project_directory)
+    # else:
+    #     print("[!] Invalid input!")
 
 
 def folder_maker(FOLDERS):
